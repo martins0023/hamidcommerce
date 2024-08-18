@@ -13,7 +13,7 @@ const App = () => {
       <div className="relative z-0 bg-colorbg">
         <div className="">
           <Routes>
-            {/*<Route index element={<Dashboard />} />*/}
+            <Route index element={<Welcome />} />
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/GetStarted" element={<GetStarted />} />
             <Route path="/GetStarted2" element={<GetStarted2 />} />

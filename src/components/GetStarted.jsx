@@ -68,6 +68,15 @@ const GetStarted = () => {
             </div>
             <MyButton onClick={handleNextPage} buttonText="Get Started!" />
           </div>
+          <div className="mt-5 mb-3">
+            <p className="text-[#353945] font-normal text-[12px] text-center">
+              Already have an account?{" "}
+              <span className="text-[#FE8946] font-semibold text-[14px]">
+                {" "}
+                <a href="/login"> Log In</a>
+              </span>
+            </p>
+          </div>
         </motion.div>
       </div>
     </section>
