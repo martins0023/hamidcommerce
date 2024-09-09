@@ -1,12 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import axios from "axios";
 import { styles } from "../../styles";
-import { logo, menu, user, notification, person, search } from "../../assets";
+import { logo, menu, user, notification, person, search, logo1, logotext, logo_blue } from "../../assets";
+import SearchBar from "../screens/SearchBar";
 
 const Navbar = () => {
   const [active, setActive] = useState("");
   const [toggle, setToggle] = useState(false);
+  const [profileImage, setProfileImage] = useState(person); // Default profile image
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const { data } = await axios.get("/api/auth/profile", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        if (data.profileImage) {
+          setProfileImage(data.profileImage);
+        }
+      } catch (error) {
+        console.error("Failed to fetch profile image", error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
   return (
     <nav
       className={`${styles.paddingX} w-full h-[190px] rounded-br-[41px] rounded-bl-[41px] flex flex-col justify-center justify-items-center py-1 top-0 z-20 bg-primary`}
@@ -26,13 +47,13 @@ const Navbar = () => {
         </Link>
 
         <div className="flex items-center justify-center justify-items-center">
-          <img src={logo} alt="logo" className="w-[90px] h-[71px]" />
+          <img src={logo1} alt="logo" className="w-[100px] h-[100px]" />
         </div>
 
         <ul className="flex list-none sm:flex flex-row items-center gap-2">
           <img
-            src={person}
-            alt="person"
+            src={profileImage}
+            alt="profile"
             className="w-[38px] h-[38px] object-contain border-solid rounded-[70px] border-gray-700"
           />
           <Link to="/notifications">
@@ -45,19 +66,7 @@ const Navbar = () => {
         </ul>
       </div>
 
-      <div className="flex flex-row gap-4 items-center relative mt-2 mr-3 ml-3">
-        <input
-          type="text"
-          name="keyword"
-          placeholder="Search for Products, Brands..."
-          className="bg-white py-4 w-full pl-5 border text-[12px] placeholder:text-black border-none text-black rounded-full outline-none h-[41px] font-normal"
-        />
-        <img
-          src={search}
-          alt="Search"
-          className="absolute right-2 top-1/2 transform -translate-y-1/2 w-[17.49] h-[17.49]"
-        />
-      </div>
+      <SearchBar />
     </nav>
   );
 };

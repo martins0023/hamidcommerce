@@ -12,9 +12,9 @@ const BottomNavbar = () => {
 
   const navItems = [
     { name: 'Home', path: '/dashboard', icon: <FaHome /> },
-    { name: 'Explore', path: '', icon: <FaWpexplorer /> },
-    { name: 'Cart', path: '', icon: <FaShoppingCart /> },
-    { name: 'Profile', path: '', icon: <FaPersonBooth /> },
+    { name: 'Explore', path: '/explore-page', icon: <FaWpexplorer /> },
+    { name: 'Cart', path: '/cart', icon: <FaShoppingCart /> },
+    { name: 'Profile', path: '/profile', icon: <FaPersonBooth /> },
   ];
 
   const handleNavClick = (path) => {

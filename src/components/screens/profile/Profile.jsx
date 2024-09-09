@@ -1,12 +1,12 @@
-import React from 'react'
+import React from "react";
+import ProfileScreen from "./ProfileScreen";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import BottomNavbar from '../dashboard/BottomNavbar';
-import { back_icon } from '../../assets';
-import { styles } from '../../styles';
-import Details from './Details';
+import BottomNavbar from "../../dashboard/BottomNavbar";
+import { styles } from "../../../styles";
+import { back_icon, person, settings, settings1, settings2, settings3 } from "../../../assets";
 
-const DetailsScreen = () => {
+const Profile = () => {
   const navigate = useNavigate();
   const containerVariants = {
     hidden: { opacity: 0, x: "-100vw" },
@@ -63,18 +63,25 @@ const DetailsScreen = () => {
 
             {/* This div takes up the remaining space and centers the text */}
             <div className="flex-grow flex justify-center">
-              {/*<p className="text-gray-400 text-[14px] text-center">
-                Product Details
-            </p>*/}
+              <p className="text-gray-400 text-[14px] text-center">
+                Update Profile
+            </p>
             </div>
+
+            <Link to="/settings" className="flex justify-end items-center flex-col gap-1">
+                <img
+                    src={settings3}
+                    className="w-[20px] h-[20px]"
+                />
+                <p className="text-black text-[10px]">settings</p>
+            </Link>
           </div>
         </nav>
-
-        <Details />
+        <ProfileScreen />
       </motion.div>
       <BottomNavbar />
     </section>
   );
-}
+};
 
-export default DetailsScreen
+export default Profile;

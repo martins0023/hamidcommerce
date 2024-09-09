@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, } from "react";
 import { styles } from "../../styles";
 import {
   shirt,
@@ -11,10 +11,17 @@ import {
   black_watch,
   gown,
 } from "../../assets";
+import { client, urlFor } from "../../../lib/client";
+import { useNavigate } from 'react-router-dom';
 
 const ProductCard = ({ product }) => {
+  const imageUrl = product.productImage?.[0]
+    ? urlFor(product.productImage[0])
+    : 'black_watch';
   const [isFavorited, setIsFavorited] = useState(product.isFavorited);
   const [rating, setRating] = useState(product.rating);
+
+  const navigate = useNavigate();
 
   const toggleFavorite = () => {
     setIsFavorited(!isFavorited);
@@ -27,8 +34,19 @@ const ProductCard = ({ product }) => {
     // Call the backend API to save the rating
     // Example: await api.saveRating(product.id, newRating);
   };
+
+  const handleClick = () => {
+    if (product.slug && product.slug.current) {
+      navigate(`/products/${product.slug.current}`);
+    } else {
+      console.error("Product slug is undefined");
+    }
+  };
   return (
-    <div className="bg-white rounded-xl h-auto shadow-sm w-[150px] flex flex-col gap-0 p-3 relative">
+    <div
+      onClick={handleClick}
+      className="bg-white rounded-xl h-auto shadow-sm w-[150px] flex flex-col gap-0 p-3 relative cursor-pointer"
+    >
       <button onClick={toggleFavorite} className="absolute top-2 right-2">
         <img
           src={isFavorited ? favorited : favorite}
@@ -37,18 +55,18 @@ const ProductCard = ({ product }) => {
         />
       </button>
       <img
-        src={product.image}
+        src={imageUrl}
         className="w-[131px] h-[130px]"
-        alt={product.name}
+        alt={product.productName}
       />
       <p className="text-[#212C62] text-[11px] font-medium text-left">
-        {product.name}
+        {product.productName}
       </p>
       <p className="text-[#00000086] font-normal text-[10px] text-left">
-        {product.storeName}
+        {product.productBrand}
       </p>
       <p className="text-black text-[14px] h-[21px] font-medium text-left">
-        {product.price}
+        NGN {product.productPrice}
       </p>
       <div className="flex items-center text-left">
         {[1, 2, 3, 4, 5].map((index) => (
@@ -61,8 +79,7 @@ const ProductCard = ({ product }) => {
           />
         ))}
         <p className="text-[#00000086] font-normal text-[10px] ml-1">
-          <span className="font-semibold">{rating.toFixed(1)}</span>(
-          {product.reviewsCount})
+          <span className="font-semibold">{rating}</span>({product.reviewsCount})
         </p>
       </div>
     </div>
@@ -70,7 +87,7 @@ const ProductCard = ({ product }) => {
 };
 
 // Example usage:
-const products = [
+{/*const products = [
   {
     id: 1,
     name: "Naskha Aillean Men’s",
@@ -114,9 +131,28 @@ const products = [
     isFavorited: true,
   },
   // Add more products here
-];
+];*/}
 
 const MostPopular = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const query = `*[_type == "section" && category == "most popular"] {
+      _id,
+      productName,
+      productBrand,
+      productPrice,
+      productImage,
+      rating,
+      reviewsCount,
+      slug
+    }`;
+
+    client.fetch(query).then((data) => {
+      console.log("Fetched Products:", data);
+      setProducts(data);
+    }).catch(console.error);
+  }, []);
   return (
     <section className={`${styles.sectionPadding}`}>
       <div className="flex flex-row justify-between">
@@ -129,7 +165,7 @@ const MostPopular = () => {
       <div className="overflow-x-auto">
         <div className="flex flex-row gap-3 w-max mt-1">
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product._id} product={product} />
           ))}
         </div>
       </div>

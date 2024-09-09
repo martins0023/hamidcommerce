@@ -1,11 +1,22 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { email_icon, logo_blue, password_icon, visible, visible_off } from "../assets";
+import Modal from "react-modal";
+import { check, email_icon, logo, logo1, logo_blue, logotext, password_icon, visible, visible_off } from "../assets";
 import MyButton from "./reusable/MyButton";
 import { login } from "../api/auth";
 
 const Login = () => {
+  const [convertmodalIsOpen, setConvertModalIsOpen] = useState(false);
+
+  const convertopenModal = () => {
+    setConvertModalIsOpen(true);
+  };
+
+  const convertcloseModal = () => {
+    setConvertModalIsOpen(false);
+  };
+
   const [passwordVisibility, setPasswordVisibility] = useState("hidden");
   const [form, setForm] = useState({ Email: "", password: "" });
   const [loading, setLoading] = useState(false);
@@ -50,6 +61,9 @@ const Login = () => {
       const { data } = await login(form);
       console.log(data);
       setShowSuccess(true);
+
+      // Wait for 2 seconds before navigating to the dashboard
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       navigate("/dashboard");
       setAttempts(0); // Reset attempts on successful login
     } catch (error) {
@@ -79,7 +93,7 @@ const Login = () => {
 
   return (
     <section className="bg-white h-screen flex justify-center items-center">
-      <div className="w-full h-full flex justify-center items-center justify-items-center">
+      <div className="w-full h-full flex justify-center items-center justify-items-center pb-20">
         {showAlert && (
           <div className="fixed top-0 left-0 right-0 bg-red-500 text-white py-2 text-center">
             Please fill out all fields correctly or try again later.
@@ -98,10 +112,10 @@ const Login = () => {
           className="flex-[0.85]"
         >
           <div className="flex justify-center items-center">
-            <img src={logo_blue} className="w-[148px] h-[115px]" />
+            <img src={logo1} className="w-full h-fit" />
           </div>
 
-          <form onSubmit={handleSubmit} className="mt-12 flex flex-col gap-6">
+          <form onSubmit={handleSubmit} className="mt-2 flex flex-col gap-6">
             <label className="flex flex-col">
               <div className="flex items-center relative">
                 <img src={email_icon} className="absolute left-4" alt="email icon" />
@@ -156,6 +170,43 @@ const Login = () => {
             </p>
           </div>
         </motion.div>
+        <div className="flex items-center justify-center ">
+          <Modal
+            isOpen={convertmodalIsOpen}
+            onRequestClose={convertcloseModal}
+            contentLabel="SUCCESS"
+            className="fixed inset-0 flex items-center justify-center  bg-black bg-opacity-10"
+            overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+          >
+            <div className="bg-white rounded-3xl shadow-lg w-full max-w-md p-7 flex flex-col items-center m-3">
+              <div className="p-3 flex justify-center items-center">
+                <img
+                  src={check}
+                  alt="success"
+                  className="w-full h-auto items-center"
+                />
+              </div>
+              <div className="mb-4">
+                <p className="font-semibold text-[20px] text-[#000000] text-center">
+                  Success
+                </p>
+              </div>
+              <div className="flex justify-between items-center mb-4">
+                <p className="font-normal text-center text-[14px] text-[#000000]">
+                  Login Successfully
+                </p>
+              </div>
+              <div className="flex flex-col w-full gap-[1px]">
+                <button
+                  onClick={convertcloseModal}
+                  className="mt-6 bg-[#1673CA] font-montserrat py-3 px-20 text-[#FFFF] border-[1.5px] hover:bg-[#1673ca3b] rounded-full uppercase w-full h-[53px]"
+                >
+                  OK
+                </button>
+              </div>
+            </div>
+          </Modal>
+        </div>
       </div>
     </section>
   );

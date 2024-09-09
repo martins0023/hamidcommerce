@@ -1,6 +1,7 @@
 import logo from "./logo.svg";
 import logo1 from "./logo.png";
-import logo_blue from "./logo_blue.png";
+import logo_blue from "./logo2.png";
+import logotext from "./logotext.png";
 import illustration1 from "./illustration1.png";
 import illustration2 from "./illustration2.png";
 import illustration3 from "./illustration3.png";
@@ -97,8 +98,33 @@ import account from "./notify/account.png";
 import delivery from "./notify/delivery.png";
 import order from "./notify/order.png";
 import promos from "./notify/promos.png";
+import topskirt from "./topskirt.png";
+import cart from "./cart.png";
+import check from "./check.png";
+import add from "./add.png";
+import del from "./delete.png";
+import plus from "./plus.png";
+import edit from "./edit.png";
+import Location from "./Location.png";
+import settings from "./settings.png";
+import settings1 from "./settings1.png";
+import settings2 from "./settings2.png";
+import settings3 from "./settings3.png";
 
 export {
+  settings,
+  settings1,
+  settings2,
+  settings3,
+  Location,
+  del,
+  plus,
+  edit,
+  add,
+  check,
+  logotext,
+  cart,
+  topskirt,
   account,
   delivery,
   order,

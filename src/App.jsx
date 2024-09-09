@@ -1,36 +1,69 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { Welcome, GetStarted, GetStarted2, GetStarted3, Login, RegisteredUser, ForgetPassword, GetCode, Signup } from "./components";
-import { NetworkProvider } from "./components/services/NetworkContext";
-import { Dashboard } from "./components/dashboard";
+import {
+  Welcome,
+  GetStarted,
+  GetStarted2,
+  GetStarted3,
+  Login,
+  RegisteredUser,
+  ForgetPassword,
+  GetCode,
+  Signup,
+} from "./components";
+import { Dashboard, Explore } from "./components/dashboard";
 import Women from "./components/screens/women/Women";
-import  Men  from "./components/screens/men/Men";
+import Men from "./components/screens/men/Men";
 import Notifications from "./components/screens/Notifications";
+import DetailsScreen from "./components/screens/DetailsScreen";
+import Cart from "./components/screens/Cart";
+import { CartProvider } from "./utils/cartcontext";
+import Profile from "./components/screens/profile/Profile";
+import ChangeEmail from "./components/screens/profile/ChangeEmail";
+import ChangePassword from "./components/screens/profile/ChangePassword";
+import Adress from "./components/screens/profile/Adress";
+import Settings from "./components/screens/profile/Settings";
+import AccountSettings from "./components/screens/profile/AccountSettings";
+import SearchResults from "./components/screens/SearchResults";
+import ExplorePage from "./components/screens/ExplorePage";
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <div className="relative z-0 bg-colorbg">
-        <div className="">
-          <Routes>
-            <Route index element={<Welcome />} />
-            <Route path="/welcome" element={<Welcome />} />
-            <Route path="/GetStarted" element={<GetStarted />} />
-            <Route path="/GetStarted2" element={<GetStarted2 />} />
-            <Route path="/GetStarted3" element={<GetStarted3 />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/RegisteredUser" element={<RegisteredUser />} />
-            <Route path="/ForgetPassword" element={<ForgetPassword />} />
-            <Route path="/GetCode" element={<GetCode />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/Dashboard" element={<Dashboard />} />
-            <Route path="/Women" element={<Women />} />
-            <Route path="/Men" element={<Men />} />
-            <Route path="/Notifications" element={<Notifications />} />
-          </Routes>
+    <CartProvider>
+      <Router>
+        <div className="relative z-0 bg-colorbg">
+          <div className="">
+            <Routes>
+              <Route index element={<Welcome />} />
+              <Route path="/welcome" element={<Welcome />} />
+              <Route path="/GetStarted" element={<GetStarted />} />
+              <Route path="/GetStarted2" element={<GetStarted2 />} />
+              <Route path="/GetStarted3" element={<GetStarted3 />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/RegisteredUser" element={<RegisteredUser />} />
+              <Route path="/ForgetPassword" element={<ForgetPassword />} />
+              <Route path="/GetCode" element={<GetCode />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/Dashboard" element={<Dashboard />} />
+              <Route path="/Women" element={<Women />} />
+              <Route path="/Men" element={<Men />} />
+              <Route path="/Notifications" element={<Notifications />} />
+              <Route path="/products/:slug" element={<DetailsScreen />} />
+              <Route path="/Cart" element={<Cart />} />
+              <Route path="/Profile" element={<Profile />} />
+              <Route path="/Changeemail" element={<ChangeEmail />} />
+              <Route path="/Changepassword" element={<ChangePassword />} />
+              <Route path="/Address" element={<Adress />} />
+              <Route path="/Settings" element={<Settings />} />
+              <Route path="/AccountSettings" element={<AccountSettings />} />
+              <Route path="/search-results" element={<SearchResults />} />
+              <Route path="/explore-page" element={<ExplorePage />} />
+            </Routes>
+          </div>
         </div>
-      </div>
-    </BrowserRouter>
+      </Router>
+    </CartProvider>
   );
 };
 
