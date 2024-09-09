@@ -101,7 +101,7 @@ import promos from "./notify/promos.png";
 import topskirt from "./topskirt.png";
 import cart from "./cart.png";
 import check from "./check.png";
-import add from "./add.png";
+import add from "./Add.png";
 import del from "./delete.png";
 import plus from "./plus.png";
 import edit from "./edit.png";
