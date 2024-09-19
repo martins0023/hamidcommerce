@@ -28,7 +28,7 @@ import AccountSettings from './components/screens/profile/AccountSettings';
 import SearchResults from './components/screens/SearchResults';
 import ExplorePage from './components/screens/ExplorePage';
 import Checkoutcart from './components/screens/Checkoutcart';
-import Payment from './components/screens/payment/payment';
+//import Payment from './components/screens/payment/payment';
 import PrivateRoute from './utils/PrivateRoute';
 
 const App = () => {
@@ -66,7 +66,6 @@ const App = () => {
               <Route path="/search-results" element={<SearchResults />} />
               <Route path="/explore-page" element={<ExplorePage />} />
               <Route path="/Checkoutcart" element={<Checkoutcart />} />
-              <Route path="/payment" element={<Payment />} />
             </Routes>
           </div>
         </div>
