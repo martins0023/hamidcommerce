@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import {
   Welcome,
@@ -11,22 +11,25 @@ import {
   ForgetPassword,
   GetCode,
   Signup,
-} from "./components";
-import { Dashboard, Explore } from "./components/dashboard";
-import Women from "./components/screens/women/Women";
-import Men from "./components/screens/men/Men";
-import Notifications from "./components/screens/Notifications";
-import DetailsScreen from "./components/screens/DetailsScreen";
-import Cart from "./components/screens/Cart";
-import { CartProvider } from "./utils/cartcontext";
-import Profile from "./components/screens/profile/Profile";
-import ChangeEmail from "./components/screens/profile/ChangeEmail";
-import ChangePassword from "./components/screens/profile/ChangePassword";
-import Adress from "./components/screens/profile/Adress";
-import Settings from "./components/screens/profile/Settings";
-import AccountSettings from "./components/screens/profile/AccountSettings";
-import SearchResults from "./components/screens/SearchResults";
-import ExplorePage from "./components/screens/ExplorePage";
+} from './components';
+import { Dashboard, Explore } from './components/dashboard';
+import Women from './components/screens/women/Women';
+import Men from './components/screens/men/Men';
+import Notifications from './components/screens/Notifications';
+import DetailsScreen from './components/screens/DetailsScreen';
+import Cart from './components/screens/Cart';
+import { CartProvider } from './utils/cartcontext';
+import Profile from './components/screens/profile/Profile';
+import ChangeEmail from './components/screens/profile/ChangeEmail';
+import ChangePassword from './components/screens/profile/ChangePassword';
+import Adress from './components/screens/profile/Adress';
+import Settings from './components/screens/profile/Settings';
+import AccountSettings from './components/screens/profile/AccountSettings';
+import SearchResults from './components/screens/SearchResults';
+import ExplorePage from './components/screens/ExplorePage';
+import Checkoutcart from './components/screens/Checkoutcart';
+import Payment from './components/screens/payment/payment';
+import PrivateRoute from './utils/PrivateRoute';
 
 const App = () => {
   return (
@@ -51,7 +54,10 @@ const App = () => {
               <Route path="/Notifications" element={<Notifications />} />
               <Route path="/products/:slug" element={<DetailsScreen />} />
               <Route path="/Cart" element={<Cart />} />
-              <Route path="/Profile" element={<Profile />} />
+              <Route
+                path="/Profile"
+                element={<Profile />}
+              />
               <Route path="/Changeemail" element={<ChangeEmail />} />
               <Route path="/Changepassword" element={<ChangePassword />} />
               <Route path="/Address" element={<Adress />} />
@@ -59,6 +65,8 @@ const App = () => {
               <Route path="/AccountSettings" element={<AccountSettings />} />
               <Route path="/search-results" element={<SearchResults />} />
               <Route path="/explore-page" element={<ExplorePage />} />
+              <Route path="/Checkoutcart" element={<Checkoutcart />} />
+              <Route path="/payment" element={<Payment />} />
             </Routes>
           </div>
         </div>

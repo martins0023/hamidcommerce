@@ -110,8 +110,18 @@ import settings from "./settings.png";
 import settings1 from "./settings1.png";
 import settings2 from "./settings2.png";
 import settings3 from "./settings3.png";
+import cartnone from "./cartnone.png";
+import circle_check from "./circle_check.png";
+import circle_check_outline from "./circle_check_outline.png";
+import locationcart from "./locationcart.png";
+import callcart from "./callcart.png";
 
 export {
+  circle_check_outline,
+  circle_check,
+  locationcart,
+  callcart,
+  cartnone,
   settings,
   settings1,
   settings2,

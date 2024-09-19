@@ -1,8 +1,18 @@
+User Authentication & Profile Setup
+Password Management
+Account Management
+Address Management
+Order Processing
+Payment Integration
+
+
+
+{/*
 import React, { useState, useEffect } from "react";
 import { add, check, person } from "../../../assets";
 import MyButton from "../../reusable/MyButton";
 import Modal from "react-modal";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { fetchUserProfile, updateUserProfile } from "../../../api/auth";
 
 const ProfileScreen = () => {
@@ -15,29 +25,30 @@ const ProfileScreen = () => {
   const convertcloseModal = () => {
     setConvertModalIsOpen(false);
   };
-  const [profileImage, setProfileImage] = useState(person); // Default profile image
+  const navigate = useNavigate();
+  const [profileImage, setProfileImage] = useState(person);
   const [Username, setUsername] = useState("");
   const [Email, setEmail] = useState("");
   const [gender, setGender] = useState("");
   const [birthday, setBirthday] = useState("");
 
-  // Fetch existing user data
   useEffect(() => {
     const getUserProfile = async () => {
       try {
         const { data } = await fetchUserProfile();
-        setUsername(data.Username || " ");
-        setEmail(data.Email || " ");
-        setGender(data.gender || " ");
-        setBirthday(data.birthday || " ");
-        if (data.profileImage) setProfileImage(data.profileImage || person);
+        setUsername(data.Username);
+        setEmail(data.Email);
+        setGender(data.gender);
+        setBirthday(data.birthday);
+        if (data.profileImage) setProfileImage(data.profileImage);
       } catch (error) {
         console.error("Failed to fetch user data", error);
+        navigate("/dashboard"); // Redirect to login if fetching profile fails
       }
     };
 
     getUserProfile();
-  }, []);
+  }, [navigate]);
 
   const handleUpdateProfile = async () => {
     try {
@@ -68,16 +79,15 @@ const ProfileScreen = () => {
   };*/
   }
   return (
-    <div className="pb-20">
+    {/*<div className="pb-20">
       <div>
-        <form onSubmit={handleUpdateProfile}>
+        <form>
           <div className="bg-[#E9F1FD]">
             <div className="relative flex items-center flex-col justify-center pt-5 pb-5">
               <div className="relative">
                 <img
                   src={profileImage}
                   className="w-[86px] h-[86px] rounded-full"
-                  onError={() => setProfileImage(person)}
                 />
                 <img
                   src={add}
@@ -168,6 +178,7 @@ const ProfileScreen = () => {
 
               <MyButton
                 buttonText="Save Changes"
+                onClick={handleUpdateProfile}
                 type="button"
               />
             </div>
@@ -215,4 +226,5 @@ const ProfileScreen = () => {
   );
 };
 
-export default ProfileScreen;
+export default ProfileScreen; 
+*/}

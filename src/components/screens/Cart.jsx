@@ -2,10 +2,11 @@ import React, { useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { styles } from "../../styles";
-import { back_icon, cart } from "../../assets";
+import { back_icon, cart, cartnone } from "../../assets";
 import { CartContext } from "../../utils/cartcontext";
 import { urlFor } from "../../../lib/client";
 import BottomNavbar from "../dashboard/BottomNavbar";
+import Checkoutcart from "./Checkoutcart";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -37,6 +38,10 @@ const Cart = () => {
       transition: { duration: 0.3 },
     },
   };
+
+  const handleCheckout = () => {
+    navigate("/checkoutcart")
+  }
 
   return (
     <section className="bg-[#FBFCFF]">
@@ -73,10 +78,10 @@ const Cart = () => {
           </div>
         </nav>
 
-        <div className="">
+        <div className="pb-28">
           <div className="px-5 mt-5">
             <div className="flex flex-row gap-3 ml-3">
-            <img src={cart} className="w-[28px] h-[23px]" />
+            <img src={cartnone} className="w-[20px] h-[23px]" />
               <p className="text-black text-[14px] font-semibold">
                 {cartItems.length} items in your cart
               </p>
@@ -104,8 +109,9 @@ const Cart = () => {
             ))}
 
             <button
+              onClick={handleCheckout}
               type="submit"
-              className={`bg-[#212c62a9] py-3 mt-10 hover:bg-[#212C62] outline-none xl text-[18px] px-2 sm:w-[406px] text-white font-normal shadow-md rounded-lg w-full h-[57px] flex items-center justify-center`}
+              className={`bg-[#212c62a9] py-3 mt-2 hover:bg-[#212C62] outline-none xl text-[18px] px-2 sm:w-[406px] text-white font-normal shadow-md rounded-lg w-full h-[57px] flex items-center justify-center`}
             >
               CHECKOUT
             </button>

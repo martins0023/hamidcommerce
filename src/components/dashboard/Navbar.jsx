@@ -51,11 +51,13 @@ const Navbar = () => {
         </div>
 
         <ul className="flex list-none sm:flex flex-row items-center gap-2">
+          <Link to="/profile" >
           <img
             src={profileImage}
             alt="profile"
             className="w-[38px] h-[38px] object-contain border-solid rounded-[70px] border-gray-700"
           />
+          </Link>
           <Link to="/notifications">
             <img
               src={notification}

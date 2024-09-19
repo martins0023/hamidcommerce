@@ -1,12 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import MyButton from "../../reusable/MyButton";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import Modal from "react-modal";
+import { updateAddress } from "../../../api/auth";
 import { styles } from "../../../styles";
 import { Location, back_icon, del, edit, plus } from "../../../assets";
 
 const Adress = () => {
   const navigate = useNavigate();
+  const [convertmodalIsOpen, setConvertModalIsOpen] = useState(false);
+
+  const convertopenModal = () => {
+    setConvertModalIsOpen(true);
+  };
+
+  const convertcloseModal = () => {
+    setConvertModalIsOpen(false);
+  };
+
+  const [newAddress, setNewAddress] = useState("");
+
+  const handleUpdateAddress = async () => {
+    try {
+      await updateAddress({ newAddress });
+      alert("Address updated successfully!");
+      navigate("/profile");
+    } catch (error) {
+      console.error("Failed to update address", error);
+      alert("Failed to update address");
+    }
+  };
   const containerVariants = {
     hidden: { opacity: 0, x: "-100vw" },
     visible: {
@@ -84,7 +108,6 @@ const Adress = () => {
         <div className="flex flex-col gap-[10px] justify justify-between ">
           <div className="bg-[#ffffff]">
             <div className="p-3 flex flex-row gap-2 justify-between">
-
               <div className="flex flex-row gap-3">
                 <img
                   src={Location}
@@ -119,7 +142,7 @@ const Adress = () => {
           </div>
 
           <div className="bg-[#ffffff]">
-            <div className="flex flex-row p-3 gap-4">
+            <div onClick={convertopenModal} className="flex flex-row p-3 gap-4">
               <img src={plus} className="w-[24px] h-[24px]" alt="add" />
               <p className="text-[#1673CA] text-[12px] font-normal mt-1">
                 Add new address
@@ -128,6 +151,37 @@ const Adress = () => {
           </div>
         </div>
       </motion.div>
+      <div className="flex items-center justify-center ">
+        <Modal
+          isOpen={convertmodalIsOpen}
+          onRequestClose={convertcloseModal}
+          contentLabel="SUCCESS"
+          className="fixed inset-0 flex items-center justify-center  bg-black bg-opacity-10"
+          overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+        >
+          <div className="bg-white rounded-3xl shadow-lg w-full max-w-md p-7 flex flex-col items-center m-3">
+            <div className="mb-4">
+              <p className="font-semibold text-[20px] text-[#000000] text-center">
+                Add Address
+              </p>
+            </div>
+            <textarea
+              type="text"
+              value={newAddress}
+              className="bg-white border-1 border-[#1673CA] rounded-lg h-40 text-black w-full"
+              onChange={(e) => setNewAddress(e.target.value)}
+            />
+            <div className="flex flex-col w-full gap-[1px]">
+              <button
+                onClick={handleUpdateAddress}
+                className="mt-6 bg-[#1673CA] font-montserrat py-3 px-30 text-[#FFFF] border-[1.5px] hover:bg-[#1673ca3b] rounded-full uppercase w-full h-[53px]"
+              >
+                Update Address
+              </button>
+            </div>
+          </div>
+        </Modal>
+      </div>
     </section>
   );
 };
