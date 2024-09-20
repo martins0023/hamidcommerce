@@ -1,7 +1,8 @@
 import axios from "axios";
 
+//baseURL: "http://localhost:5000/api/auth",
 const API = axios.create({
-  baseURL: "http://localhost:5000/api/auth",
+  baseURL: "https://ecommerce-backend-n793.onrender.com/api/auth",
 });
 
 //login

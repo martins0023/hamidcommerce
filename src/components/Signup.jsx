@@ -94,7 +94,7 @@ const Signup = () => {
           className="flex-[0.85]"
         >
           <div className="flex justify-center items-center mt-4">
-            <img src={logo1} className="w-full h-fit" />
+            <img src={logo1} className="w-fit h-fit" />
           </div>
 
           <form onSubmit={handleSubmit} className="mt-5 flex flex-col gap-6">
