@@ -1,3 +1,4 @@
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -28,12 +29,19 @@ import AccountSettings from './components/screens/profile/AccountSettings';
 import SearchResults from './components/screens/SearchResults';
 import ExplorePage from './components/screens/ExplorePage';
 import Checkoutcart from './components/screens/Checkoutcart';
-//import Payment from './components/screens/payment/payment';
 import PrivateRoute from './utils/PrivateRoute';
+import OrderProcessing from './components/screens/payment/OrderProcessing';
+
+const initialOptions = {
+  "client-id": "Aeet3ZkhnzmW-k_gI9iHXvdNaiRjlcYuI2WzHA-otDM_0cyO-MywP4StKWWWouRhraS_JO9f1cUQnk61",
+  currency: "USD",
+  intent: "capture",
+};
 
 const App = () => {
   return (
     <CartProvider>
+      <PayPalScriptProvider options={initialOptions}>
       <Router>
         <div className="relative z-0 bg-colorbg">
           <div className="">
@@ -66,10 +74,14 @@ const App = () => {
               <Route path="/search-results" element={<SearchResults />} />
               <Route path="/explore-page" element={<ExplorePage />} />
               <Route path="/Checkoutcart" element={<Checkoutcart />} />
+              
+                <Route path="/OrderProcessing" element={<OrderProcessing />} />
+              
             </Routes>
           </div>
         </div>
       </Router>
+      </PayPalScriptProvider>
     </CartProvider>
   );
 };

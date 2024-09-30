@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { FaHome, FaPlusCircle, FaUser, FaPersonBooth, FaWpexplorer, FaShoppingCart, FaInternetExplorer, FaDeploydog } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
+import { CartContext } from '../../utils/cartcontext'; 
 
 const BottomNavbar = () => {
   const location = useLocation();
   const [activeNav, setActiveNav] = useState(location.pathname);
+
+  const { cartItems } = useContext(CartContext); // Access cart items from context
 
   useEffect(() => {
     setActiveNav(location.pathname);
@@ -32,7 +35,15 @@ const BottomNavbar = () => {
             activeNav === item.path ? 'text-[#F7931A]' : 'text-[#363853] gap-2'
           }`}
         >
-          <div className="text-xl">{item.icon}</div>
+          <div className="relative text-xl">
+            {item.icon}
+            {/* Display the cart item count on the Cart icon */}
+            {item.name === 'Cart' && cartItems.length > 0 && (
+              <span className="absolute -top-2 -right-3 bg-[#363853] text-white text-xs rounded-full w-4 h-4 flex justify-center items-center">
+                {cartItems.length}
+              </span>
+            )}
+          </div>
           <span className="text-[12px]">{item.name}</span>
         </Link>
       ))}

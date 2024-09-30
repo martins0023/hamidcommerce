@@ -112,7 +112,7 @@ const Login = () => {
           className="flex-[0.85]"
         >
           <div className="flex justify-center items-center">
-            <img src={logo1} className="w-fit h-fit" />
+            <img src={logo1} className="w-[90px] h-[98px]" />
           </div>
 
           <form onSubmit={handleSubmit} className="mt-2 flex flex-col gap-6">

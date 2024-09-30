@@ -1,6 +1,8 @@
 import axios from "axios";
 
+//const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 //baseURL: "http://localhost:5000/api/auth",
+//https://ecommerce-backend-n793.onrender.com/api/auth,
 const API = axios.create({
   baseURL: "https://ecommerce-backend-n793.onrender.com/api/auth",
 });

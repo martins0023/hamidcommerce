@@ -115,8 +115,20 @@ import circle_check from "./circle_check.png";
 import circle_check_outline from "./circle_check_outline.png";
 import locationcart from "./locationcart.png";
 import callcart from "./callcart.png";
+import crypto from "./crypto.png";
+import paystack from "./paystack.png";
+import paga from "./paga.png";
+import stripe from "./stripe.png";
+import visa from "./visa.png";
+import mastercard from "./Mastercard.png";
 
 export {
+  crypto,
+  paystack,
+  paga,
+  stripe,
+  visa,
+  mastercard,
   circle_check_outline,
   circle_check,
   locationcart,

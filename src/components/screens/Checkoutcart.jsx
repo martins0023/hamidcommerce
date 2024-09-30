@@ -25,7 +25,7 @@ const Checkoutcart = () => {
   };
 
   const handlePayment = () => {
-    navigate("/payment");
+    navigate("/orderprocessing");
   };
 
   // Calculate total product price
@@ -82,7 +82,7 @@ const Checkoutcart = () => {
           </div>
         </nav>
 
-        <div className="pb-20">
+        <div className="pb-28">
           <div className="px-5 ">
             {/* List of Cart Items with Images */}
             <p className="text-black text-[14px] font-semibold">
@@ -238,7 +238,7 @@ const Checkoutcart = () => {
                       Shipping Fees
                     </p>
                     <p className="text-[#00000073] text-[12px] font-medium">
-                      #100,000
+                      #0,00
                     </p>
                   </div>
                   <div className="flex flex-row justify-between">
@@ -246,7 +246,7 @@ const Checkoutcart = () => {
                       Tax
                     </p>
                     <p className="text-[#00000073] text-[12px] font-medium">
-                      #5,000
+                      #0,00
                     </p>
                   </div>
                   <div className="flex flex-row justify-between">
@@ -262,7 +262,7 @@ const Checkoutcart = () => {
                 <div className="border-t-[0.5px] border-[#00000050] px-3">
                   <div className="flex flex-row justify-between mt-2">
                     <p className="text-black font-semibold">Total Amount</p>
-                    <p className="text-black font-semibold">NGN 175,000</p>
+                    <p className="text-black font-semibold">NGN {totalProductPrice}</p>
                   </div>
                 </div>
               </div>

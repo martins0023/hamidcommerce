@@ -1,8 +1,19 @@
 import React, { useEffect, useState } from "react";
+import Typewriter from "typewriter-effect";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { styles } from "../../styles";
-import { logo, menu, user, notification, person, search, logo1, logotext, logo_blue } from "../../assets";
+import {
+  logo,
+  menu,
+  user,
+  notification,
+  person,
+  search,
+  logo1,
+  logotext,
+  logo_blue,
+} from "../../assets";
 import SearchBar from "../screens/SearchBar";
 
 const Navbar = () => {
@@ -41,22 +52,35 @@ const Navbar = () => {
             window.scrollTo(0, 0);
           }}
         >
-          <Link to="">
+          <Link to="/settings">
             <img src={menu} alt="apps" className="cursor-pointer" />
           </Link>
         </Link>
 
-        <div className="flex items-center justify-center justify-items-center">
-          <img src={logo1} alt="logo" className="w-[100px] h-[100px]" />
+        <div className="flex items-center justify-center justify-items-center h-20">
+          <div className="">
+            <Typewriter
+              options={{
+                strings: ["Quick", "Buy"],
+                autoStart: true,
+                loop: true,
+              }}
+            />
+            <style jsx>{`
+              div {
+                font-size: 18px; /* Set font size to 14px */
+              }
+            `}</style>
+          </div>
         </div>
 
         <ul className="flex list-none sm:flex flex-row items-center gap-2">
-          <Link to="/profile" >
-          <img
-            src={profileImage}
-            alt="profile"
-            className="w-[38px] h-[38px] object-contain border-solid rounded-[70px] border-gray-700"
-          />
+          <Link to="/profile">
+            <img
+              src={profileImage}
+              alt="profile"
+              className="w-[38px] h-[38px] object-contain border-solid rounded-[70px] border-gray-700"
+            />
           </Link>
           <Link to="/notifications">
             <img
