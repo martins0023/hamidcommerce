@@ -23,6 +23,18 @@ import { CartContext } from "../../../utils/cartcontext";
 import { urlFor } from "../../../../lib/client";
 import BottomNavbar from "../../dashboard/BottomNavbar";
 
+// Sample exchange rate (1 USD = 780 NGN for example)
+const EXCHANGE_RATES = {
+  NGN: 1, // Base currency
+  USD: 0.00128, // 1 NGN to USD
+  EUR: 0.00118, // 1 NGN to EUR
+};
+
+// Function to convert NGN to other currencies
+const convertToCurrency = (amountInNGN, currency) => {
+  const rate = EXCHANGE_RATES[currency] || 1;
+  return (amountInNGN * rate).toFixed(2);
+};
 // Make sure to use your actual Stripe publishable key
 const stripePromise = loadStripe(
   `${process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY}`
@@ -37,6 +49,22 @@ const OrderProcessing = () => {
   //PAYPAL INTEGRATION
   const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
   const [currency, setCurrency] = useState(options.currency);
+  const { cartItems } = useContext(CartContext);
+  // Check if the cartItems array has items before accessing the first element
+  console.log(cartItems);
+
+  // Calculate total product price
+  const totalProductPrice = cartItems.reduce((total, item) => {
+    return total + item.price;
+  }, 0);
+
+   // Total price in NGN
+  const totalProductPriceNGN = cartItems.reduce((total, item) => {
+    return total + item.price;
+  }, 0);
+
+  // Convert the total price to the selected currency
+  const totalProductPriceInSelectedCurrency = convertToCurrency(totalProductPriceNGN, currency);
 
   const onCurrencyChange = ({ target: { value } }) => {
     setCurrency(value);
@@ -54,7 +82,8 @@ const OrderProcessing = () => {
       purchase_units: [
         {
           amount: {
-            value: "8.99",
+            value: totalProductPriceInSelectedCurrency, // Use converted price here
+            currency_code: currency === "NGN" ? "USD" : currency, // Fallback to USD if NGN is selected
           },
         },
       ],
@@ -67,39 +96,36 @@ const OrderProcessing = () => {
       alert(`Transaction completed by ${name}`);
     });
   };
-  const { cartItems } = useContext(CartContext);
-  // Check if the cartItems array has items before accessing the first element
-  console.log(cartItems);
 
   const handleCheckout = async () => {
     const stripe = await loadStripe(
       "pk_test_51HIjnmK18qLqQSoUOzmnoiNfm2CSsrgsH3uq3OuDNIHkVcZbHghDcCGsngMYtmFqnMVIfVRDVt7A7oO9j9jvm8Pb00hw5qtH51"
     );
-  
+
     // Ensure cartItems is not empty or undefined
     if (!cartItems || cartItems.length === 0) {
       console.error("Cart is empty or undefined");
       return;
     }
-  
+
     // Ensure each cart item has a valid quantity, price, and name
     const validCartItems = cartItems.filter(
       (item) => item.quantity > 0 && item.price > 0 && item.name
     );
-  
+
     if (validCartItems.length === 0) {
       console.error;
       return;
     }
-  
+
     const body = {
       products: validCartItems, // Send valid cart items to the backend
     };
-  
+
     const headers = {
       "Content-Type": "application/json",
     };
-  
+
     try {
       const response = await fetch(
         `http://localhost:5000/create-checkout-session`,
@@ -109,19 +135,19 @@ const OrderProcessing = () => {
           body: JSON.stringify(body),
         }
       );
-  
+
       if (!response.ok) {
         const errorMessage = await response.text();
         throw new Error(`Error: ${errorMessage}`);
       }
-  
+
       const session = await response.json();
-  
+
       // Redirect to Stripe Checkout
       const result = await stripe.redirectToCheckout({
         sessionId: session.id,
       });
-  
+
       if (result.error) {
         console.error(result.error.message);
       }
@@ -129,12 +155,6 @@ const OrderProcessing = () => {
       console.error("Checkout error: ", error.message);
     }
   };
-  
-
-  // Calculate total product price
-  const totalProductPrice = cartItems.reduce((total, item) => {
-    return total + item.price;
-  }, 0);
 
   const containerVariants = {
     hidden: { opacity: 0, x: "-100vw" },
@@ -248,8 +268,8 @@ const OrderProcessing = () => {
                 <p className="text-[14px] text-black font-semibold">
                   Payment Method
                 </p>
-                <div className="flex flex-row mt-2 gap-2">
-                  <div className="bg-[#E9F1FD] rounded-lg w-[70px] h-[60px] flex items-center justify-center p-1">
+                <div className="flex mt-2 gap-2">
+                  {/*<div className="bg-[#E9F1FD] rounded-lg w-[70px] h-[60px] flex items-center justify-center p-1">
                     <img
                       src={paystack}
                       className="w-[50px] h-[30px]"
@@ -272,16 +292,28 @@ const OrderProcessing = () => {
                       className="w-[40px] h-[30px]"
                       alt="mastercard"
                     />
+              </div>
+              <div
+                    onClick={handleCheckout}
+                    className="bg-[#E9F1FD] rounded-lg cursor-pointer w-[70px] h-[60px] flex items-center justify-center p-1"
+                  >
+                    <img
+                      src={stripe}
+                      className="w-[40px] h-[40px]"
+                      alt="STRIPE"
+                    />
                   </div>
+              */}
 
-                  <div className="checkout">
+                  <div className="w-full ">
                     {isPending ? (
                       <p>LOADING...</p>
                     ) : (
                       <>
-                        <select value={currency} onChange={onCurrencyChange}>
+                        <select className="w-full mb-2 rounded-xl text-black font-montserrat font-semibold" id="currency" value={currency} onChange={onCurrencyChange}>
                           <option value="USD">💵 USD</option>
                           <option value="EUR">💶 Euro</option>
+                          <option value="NGN">🇳🇬 NGN</option>
                         </select>
                         <PayPalButtons
                           style={{ layout: "vertical" }}
@@ -294,17 +326,6 @@ const OrderProcessing = () => {
                         />
                       </>
                     )}
-                  </div>
-
-                  <div
-                    onClick={handleCheckout}
-                    className="bg-[#E9F1FD] rounded-lg cursor-pointer w-[70px] h-[60px] flex items-center justify-center p-1"
-                  >
-                    <img
-                      src={stripe}
-                      className="w-[40px] h-[40px]"
-                      alt="STRIPE"
-                    />
                   </div>
                 </div>
               </div>
