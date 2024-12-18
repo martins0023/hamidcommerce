@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import MyButton from "../../reusable/MyButton";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { styles } from "../../../styles";
-import { back_icon } from "../../../assets";
+import { back_icon, person } from "../../../assets";
+import { fetchUserProfile, updateUserProfile } from "../../../api/auth";
 
 const ChangeEmail = () => {
   const navigate = useNavigate();
@@ -33,6 +34,35 @@ const ChangeEmail = () => {
       transition: { duration: 0.3 },
     },
   };
+
+  const [profileImage, setProfileImage] = useState(person); // Default profile image
+  const [Email, setEmail] = useState("");
+
+  // Fetch existing user data
+  useEffect(() => {
+    const getUserProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("No token found, redirecting to login");
+          // Redirect to login if no token is found
+          return;
+        }
+        const { data } = await fetchUserProfile();
+        setEmail(data.Email || " ");
+        console.log("Fetched User Data:", data);
+        if (data.profileImage) setProfileImage(data.profileImage || person);
+      } catch (error) {
+        console.error("Failed to fetch user data", error.response || error);
+        if (error.response && error.response.status === 401) {
+          console.error("Unauthorized, redirecting to login");
+          // Handle unauthorized access (e.g., redirect to login)
+        }
+      }
+    };
+  
+    getUserProfile();
+  }, []);
   return (
     <section className="bg-[#FBFCFF]">
       <motion.div
@@ -91,7 +121,7 @@ const ChangeEmail = () => {
             Current Email Address
           </p>
           <p className="text-[#1673CA] text-[14px] font-normal">
-            femida84@email.com
+            {Email}
           </p>
         </div>
 

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { styles } from "../../styles";
@@ -12,10 +12,14 @@ import {
 import { CartContext } from "../../utils/cartcontext";
 import { urlFor } from "../../../lib/client";
 import BottomNavbar from "../dashboard/BottomNavbar";
+import { fetchUserProfile } from "../../api/auth";
 
 const Checkoutcart = () => {
   // Delivery option state: 'home' or 'pickup'
   const [deliveryOption, setDeliveryOption] = useState(null);
+  const [Email, setEmail] = useState("");
+  const [phonenumber, setPhonenumber] = useState("");
+  const [currentAddress, setCurrentAddress] = useState("");
   const navigate = useNavigate();
   const { cartItems } = useContext(CartContext);
 
@@ -32,6 +36,53 @@ const Checkoutcart = () => {
   const totalProductPrice = cartItems.reduce((total, item) => {
     return total + item.price;
   }, 0);
+
+  useEffect(() => {
+    const getUserProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("No token found, redirecting to login");
+          // Redirect to login if no token is found
+          return;
+        }
+        const { data } = await fetchUserProfile();
+        setEmail(data.Email || " ");
+        setPhonenumber(data.phonenumber || " ");
+        console.log("Fetched User Data:", data);
+        if (data.profileImage) setProfileImage(data.profileImage || person);
+      } catch (error) {
+        console.error("Failed to fetch user data", error.response || error);
+        if (error.response && error.response.status === 401) {
+          console.error("Unauthorized, redirecting to login");
+          // Handle unauthorized access (e.g., redirect to login)
+        }
+      }
+    };
+  
+    getUserProfile();
+  }, []);
+
+  useEffect(() => {
+    const getUserAddress = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("No token found, redirecting to login");
+          navigate("/login");
+          return;
+        }
+        const { data } = await fetchUserProfile(); // Assuming fetchUserProfile fetches all profile data including address
+        setCurrentAddress(data.address || ""); // Adjust field name based on backend
+      } catch (error) {
+        console.error("Failed to fetch user address", error.response || error);
+        if (error.response && error.response.status === 401) {
+          navigate("/login");
+        }
+      }
+    };
+    getUserAddress();
+  }, [navigate]);
 
   const containerVariants = {
     hidden: { opacity: 0, x: "-100vw" },
@@ -127,8 +178,7 @@ const Checkoutcart = () => {
                   </div>
 
                   <p className="text-[12px] text-[#00000070] w-[199px] ml-7 mt-2">
-                    Jack Allison Jackie Auto Rice Mill & Company 719 Ikeja,
-                    Lagos, Nigeria
+                    {currentAddress}
                   </p>
                 </div>
               </div>
@@ -142,7 +192,7 @@ const Checkoutcart = () => {
                       <p className="text-black font-semibold">Contact</p>
                     </div>
                     <Link
-                      to="/address"
+                      to="/profile"
                       className="text-[#00000070] text-[12px] underline"
                     >
                       Edit
@@ -150,10 +200,10 @@ const Checkoutcart = () => {
                   </div>
 
                   <p className="text-[12px] text-[#00000070] w-[199px] ml-7 mt-2">
-                    Phone: <span>+234901234558</span>
+                    Phone: <span>{phonenumber}</span>
                   </p>
                   <p className="text-[12px] text-[#00000070] w-[199px] ml-7">
-                    Email: <span>myname@email.com</span>
+                    Email: <span>{Email}</span>
                   </p>
                 </div>
               </div>

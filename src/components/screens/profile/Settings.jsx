@@ -78,7 +78,7 @@ const Settings = () => {
           <hr className="h-2  m-2" />
           <Link to="/address" className="text-[#242121] text-[14px] font-normal">Manage Addresses</Link>
           <hr className="h-2  m-2" />
-          <Link to="/payments" className="text-[#242121] text-[14px] font-normal">Manage Payments</Link>
+          <Link to="/PaymentSettings" className="text-[#242121] text-[14px] font-normal">Manage Payments</Link>
           <hr className="h-2  m-2" />
           <Link to="/logout" className="text-[#242121] text-[14px] font-normal">Logout</Link>
           <hr className="h-2  m-2" />

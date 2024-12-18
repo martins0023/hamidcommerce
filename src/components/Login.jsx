@@ -59,8 +59,24 @@ const Login = () => {
 
     try {
       const { data } = await login(form);
+      // Save the token in localStorage
+      const token = data?.token;
+      if (token) {
+        localStorage.setItem("token", token);
+      }
+
       console.log(data);
+
+      // Extract the user's email from the response
+      const userEmail = data?.email || form.Email;
       setShowSuccess(true);
+
+      // Update the success message to include the user's email
+      const successMessage = `Login Successful. Welcome back, ${userEmail}!`;
+      console.log(successMessage)
+      setTimeout(() => {
+        setShowSuccess(false); // Hide the success message after 3 seconds
+      }, 3000);
 
       // Wait for 2 seconds before navigating to the dashboard
       await new Promise((resolve) => setTimeout(resolve, 2000));

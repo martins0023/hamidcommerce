@@ -4,7 +4,8 @@ import axios from "axios";
 //baseURL: "http://localhost:5000/api/auth",
 //https://ecommerce-backend-n793.onrender.com/api/auth,
 const API = axios.create({
-  baseURL: "https://ecommerce-backend-n793.onrender.com/api/auth",
+  // baseURL: "https://ecommerce-backend-n793.onrender.com/api/auth",
+  baseURL: "http://localhost:5000/api/auth",
 });
 
 //login
@@ -29,8 +30,27 @@ export const updateUserProfile = (profileData) =>
     },
   });
 
+// Upload Image to Cloudinary
+export const uploadImageToCloudinary = async (file) => {
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "hamidcommerce"); // Replace with your preset
+    formData.append("cloud_name", "ds1tswazd"); // Replace with your cloud name
 
-  //password update
+    const response = await axios.post(
+      "https://api.cloudinary.com/v1_1/ds1tswazd/image/upload",
+      formData
+    );
+
+    return response.data.secure_url; // Returns the image URL
+  } catch (error) {
+    console.error("Cloudinary Upload Error: ", error.message);
+    throw error;
+  }
+};
+
+//password update
 export const updatePassword = (passwordData) =>
   API.put("/profile/update-password", passwordData, {
     headers: {

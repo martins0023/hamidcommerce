@@ -15,6 +15,7 @@ import {
   logo_blue,
 } from "../../assets";
 import SearchBar from "../screens/SearchBar";
+import { fetchUserProfile } from "../../api/auth";
 
 const Navbar = () => {
   const [active, setActive] = useState("");
@@ -22,22 +23,21 @@ const Navbar = () => {
   const [profileImage, setProfileImage] = useState(person); // Default profile image
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
+    const getUserProfile = async () => {
       try {
-        const { data } = await axios.get("/api/auth/profile", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        if (data.profileImage) {
-          setProfileImage(data.profileImage);
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("No token found, redirecting to login");
+          return;
         }
+        const { data } = await fetchUserProfile();
+
+        setProfileImage(data.profileImage || person);
       } catch (error) {
-        console.error("Failed to fetch profile image", error);
+        console.error("Failed to fetch user data", error.response || error);
       }
     };
-
-    fetchUserProfile();
+    getUserProfile();
   }, []);
   return (
     <nav
@@ -79,7 +79,7 @@ const Navbar = () => {
             <img
               src={profileImage}
               alt="profile"
-              className="w-[38px] h-[38px] object-contain border-solid rounded-[70px] border-gray-700"
+              className="w-[38px] h-[38px] border-solid rounded-full border-gray-700"
             />
           </Link>
           <Link to="/notifications">

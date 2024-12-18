@@ -26,6 +26,7 @@ import ChangePassword from './components/screens/profile/ChangePassword';
 import Adress from './components/screens/profile/Adress';
 import Settings from './components/screens/profile/Settings';
 import AccountSettings from './components/screens/profile/AccountSettings';
+import PaymentSettings from './components/screens/profile/PaymentSettings';
 import SearchResults from './components/screens/SearchResults';
 import ExplorePage from './components/screens/ExplorePage';
 import Checkoutcart from './components/screens/Checkoutcart';
@@ -69,6 +70,7 @@ const App = () => {
               <Route path="/Changeemail" element={<ChangeEmail />} />
               <Route path="/Changepassword" element={<ChangePassword />} />
               <Route path="/Address" element={<Adress />} />
+              <Route path="/PaymentSettings" element={<PaymentSettings />} />
               <Route path="/Settings" element={<Settings />} />
               <Route path="/AccountSettings" element={<AccountSettings />} />
               <Route path="/search-results" element={<SearchResults />} />
