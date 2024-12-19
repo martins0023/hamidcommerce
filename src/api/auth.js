@@ -72,3 +72,53 @@ export const updateAddress = (addressData) =>
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
+
+// Logout
+export const logout = async () => {
+  try {
+    // Make a request to the server to clear the session
+    await API.post("/logout", null, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+
+    // Clear local storage (or other client-side storage)
+    localStorage.removeItem("token");
+    return { success: true, message: "Logout successful" };
+  } catch (error) {
+    console.error("Logout Error:", error.message);
+    throw error;
+  }
+};
+
+// Store card details
+export const storeCard = async (cardData) => {
+  try {
+    const token = localStorage.getItem("token"); // Retrieve JWT from local storage
+    const response = await API.post("/store-card", cardData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Store Card Error:", error);
+    throw error;
+  }
+};
+
+export const fetchCards = async (userId) => {
+  try {
+    const response = await axios.get(`/get-cards/${userId}`);
+    if (response.data.success) {
+      return response.data.cards;
+    } else {
+      console.error("Error fetching cards:", response.data.error);
+      return [];
+    }
+  } catch (error) {
+    console.error("Fetch Cards Error:", error);
+    return [];
+  }
+};

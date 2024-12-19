@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { back_icon } from "../../../assets";
+import { storeCard, fetchCards } from "../../../api/auth";
 
 const PaymentSettings = () => {
   const navigate = useNavigate();
@@ -13,36 +14,33 @@ const PaymentSettings = () => {
     cvv: "",
   });
   const [loading, setLoading] = useState(false);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setCardDetails({ ...cardDetails, [name]: value });
-  };
+  const [message, setMessage] = useState("");
 
   const handleNextStep = () => {
     if (step === 1) setStep(2);
   };
 
-  const handleSubmit = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch("/api/store-card", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(cardDetails),
-      });
-      const data = await response.json();
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-      if (data.success) {
-        // Redirect to 3D Secure Gateway
-        window.location.href = data.redirectUrl;
-      } else {
-        alert("Card validation failed. Try again!");
+    // Restrict card number input to numeric values only
+    if (name === "cardNumber" && !/^\d*$/.test(value)) {
+      return;
+    }
+
+    setCardDetails({ ...cardDetails, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await storeCard(cardDetails);
+      setMessage(response.message); // Display success message
+      if (response.redirectUrl) {
+        window.location.href = response.redirectUrl; // Redirect for 3D Secure verification
       }
     } catch (error) {
-      console.error("Error:", error);
-    } finally {
-      setLoading(false);
+      setMessage("Failed to store card. Please try again.");
     }
   };
 
@@ -86,8 +84,10 @@ const PaymentSettings = () => {
                 type="text"
                 name="cardNumber"
                 placeholder="Card Number"
+                maxLength="16" // Limit to 16 digits
                 className="w-full border text-black p-3 rounded mb-3"
                 onChange={handleChange}
+                value={cardDetails.cardNumber}
               />
               <input
                 type="text"
@@ -95,6 +95,7 @@ const PaymentSettings = () => {
                 placeholder="Cardholder Name"
                 className="w-full border p-3 rounded mb-3 text-black"
                 onChange={handleChange}
+                value={cardDetails.cardholderName}
               />
               <div className="flex space-x-2">
                 <input
@@ -104,6 +105,7 @@ const PaymentSettings = () => {
                   maxLength="2"
                   className="w-1/2 border p-3 rounded text-black"
                   onChange={handleChange}
+                  value={cardDetails.expiryMonth}
                 />
                 <input
                   type="text"
@@ -112,6 +114,7 @@ const PaymentSettings = () => {
                   maxLength="2"
                   className="w-1/2 border p-3 rounded text-black"
                   onChange={handleChange}
+                  value={cardDetails.expiryYear}
                 />
                 <input
                   type="password"
@@ -120,6 +123,7 @@ const PaymentSettings = () => {
                   maxLength="3"
                   className="w-1/2 border p-3 rounded text-black"
                   onChange={handleChange}
+                  value={cardDetails.cvv}
                 />
               </div>
               <button

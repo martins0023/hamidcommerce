@@ -4,9 +4,19 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { styles } from "../../../styles";
 import { back_icon } from "../../../assets";
+import { logout } from "../../../api/auth";
 
 const Settings = () => {
   const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      await logout();
+      // Redirect to login or home page
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("Logout Failed:", error.message);
+    }
+  };
   const containerVariants = {
     hidden: { opacity: 0, x: "-100vw" },
     visible: {
@@ -80,7 +90,7 @@ const Settings = () => {
           <hr className="h-2  m-2" />
           <Link to="/PaymentSettings" className="text-[#242121] text-[14px] font-normal">Manage Payments</Link>
           <hr className="h-2  m-2" />
-          <Link to="/logout" className="text-[#242121] text-[14px] font-normal">Logout</Link>
+          <button onClick={handleLogout} className="text-white text-[14px] font-normal bg-red-600 py-2 px-4 rounded hover:bg-red-700">Logout</button>
           <hr className="h-2  m-2" />
         </div>
 
