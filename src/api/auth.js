@@ -4,8 +4,8 @@ import axios from "axios";
 //baseURL: "http://localhost:5000/api/auth",
 //https://ecommerce-backend-n793.onrender.com/api/auth,
 const API = axios.create({
-  // baseURL: "https://ecommerce-backend-n793.onrender.com/api/auth",
-  baseURL: "http://localhost:5000/api/auth",
+  baseURL: "https://ecommerce-backend-n793.onrender.com/api/auth",
+  //baseURL: "http://localhost:5000/api/auth",
 });
 
 //login
